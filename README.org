@@ -1,0 +1,6 @@
+
+This is a cutted version of [[https://github.com/HSU-ANT/beaqlejs][beaglejs]] by adding AB test and removing unused code.
+
+* Acknowledgement
+  - https://github.com/HSU-ANT/beaqlejs
+

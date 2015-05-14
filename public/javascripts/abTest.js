@@ -15,9 +15,9 @@ abTest.prototype.constructor = abTest;
 // create random mapping to test files
 abTest.prototype.createFileMapping = function (TestIdx) {
     var NumFiles = $.map(this.TestConfig.Testsets[TestIdx].Files, function(n, i) { return i; }).length;
-    var fileMapping = new Array(NumFiles);    
+    var fileMapping = new Array(NumFiles);
 
-    $.each(this.TestConfig.Testsets[TestIdx].Files, function(index, value) { 
+    $.each(this.TestConfig.Testsets[TestIdx].Files, function(index, value) {
 
         do {
             var RandFileNumber = Math.floor(Math.random()*(NumFiles));
@@ -27,7 +27,7 @@ abTest.prototype.createFileMapping = function (TestIdx) {
         if (RandFileNumber<0) alert(fileMapping);
         fileMapping[RandFileNumber] = index;
     });
-    
+
     this.TestState.FileMappings[TestIdx] = fileMapping;
 }
 
@@ -42,7 +42,7 @@ abTest.prototype.createTestDOM = function (TestIdx) {
     // create new test table
     var tab = document.createElement('table');
     tab.setAttribute('id','TestTable');
-    
+
     var fileID = "";
     var row = new Array();
     var cell = new Array();
@@ -51,7 +51,7 @@ abTest.prototype.createTestDOM = function (TestIdx) {
     if (!this.TestState.FileMappings[TestIdx]) {
         this.createFileMapping(TestIdx);
     }
-    
+
     // add reference
     fileID = "A";
     row  = tab.insertRow(-1);
@@ -69,27 +69,27 @@ abTest.prototype.createTestDOM = function (TestIdx) {
 
     cell[3] = row.insertCell(-1);
     cell[3].innerHTML = "<button class='stopButton'>Stop</button>";
-    
+
     cell[4] = row.insertCell(-1);
-    cell[4].innerHTML = "Press buttons to start/stop playback."; 
-    
+    cell[4].innerHTML = "Press buttons to start/stop playback.";
+
     row[1]  = tab.insertRow(-1);
     cell[0] = row[1].insertCell(-1);
     cell[0].innerHTML = "<input type='radio' name='ItemSelection' id='selectA'/>";
     cell[1] = row[1].insertCell(-1);
-    cell[1].innerHTML = "<input type='radio' name='ItemSelection' id='selectSame'/>";  
+    cell[1].innerHTML = "<input type='radio' name='ItemSelection' id='selectSame'/>";
     cell[2] = row[1].insertCell(-1);
-    cell[2].innerHTML = "<input type='radio' name='ItemSelection' id='selectB'/>";  
+    cell[2].innerHTML = "<input type='radio' name='ItemSelection' id='selectB'/>";
     cell[3] = row[1].insertCell(-1);
     cell[4] = row[1].insertCell(-1);
-    cell[4].innerHTML = "Please select the item which is better!";  
-    
+    cell[4].innerHTML = "Please select the item which is better!";
+
     // add spacing
     row = tab.insertRow(-1);
-    row.setAttribute("height","5");  
+    row.setAttribute("height","5");
 
     // append the created table to the DOM
-    $('#TableContainer').append(tab);	
+    $('#TableContainer').append(tab);
 
     // randomly preselect one radio button
     if (typeof this.TestState.Ratings[TestIdx] == 'undefined') {
@@ -167,11 +167,11 @@ abTest.prototype.formatResults = function () {
 	    // better one
             cell = row.insertCell(-1);
             // cell.innerHTML = this.TestState.Ratings[i];
-	    
+
 	    var choice = this.TestState.Ratings[i];
 	    // choice = this.TestState.Ratings[i];
 	    if (choice === "=" ){
-	    	cell.innerHTML = "No prefer";		
+	    	cell.innerHTML = "No prefer";
 		numSame++;
 		this.TestState.EvalResults[i].Result = "Prefer:" + "No prefer";
 	    } else if (choice === "A"){
@@ -190,7 +190,7 @@ abTest.prototype.formatResults = function () {
 
     var SummaryObj = new Object();
     SummaryObj.Summary = ""
-    
+
     SummaryObj.Summary += "No prefer: " + (numSame/this.TestConfig.Testsets.length*100).toFixed(2) + " %, ";
     SummaryObj.Summary += "Prefer A: " + (numA/this.TestConfig.Testsets.length*100).toFixed(2) + " %, ";
     SummaryObj.Summary += "Prefer B: " + (numB/this.TestConfig.Testsets.length*100).toFixed(2) + " %";

@@ -34,7 +34,7 @@
              this.waContext = false;
              break;
         }
-        
+
 	    // only enable webAudio on Chrome, Safri and Opera.
         if (!(clientIsChrome() || clientIsSafari() || clientIsOpera()))
             this.waContext = false;
@@ -55,15 +55,15 @@
 
     // callback for timeUpdate event
     AudioPool.prototype.loopCallback = function(_this) {
-        
+
         if (_this.IDPlaying!==-1) {
-       
+
             var audiotag = $('#'+_this.PoolID+' > #audio'+_this.IDPlaying).get(0);
-            
+
             // calculate progress including a look ahead for fade out or loop
             var progress = 0;
             progress = (audiotag.currentTime+_this.positionUpdateInterval+_this.fadeOutTime) / audiotag.duration * 100.0;
-            
+
             // if end is reached ...
             if ((progress >= _this.ABPos[1]) && (!_this.LoopFade)) {
                 if (_this.LoopAudio == true) {
@@ -79,11 +79,11 @@
     // overwrite these callbacks events after instantiation
 
     // callback for time update event
-    AudioPool.prototype.onTimeUpdate = function(e) {}    
-    
+    AudioPool.prototype.onTimeUpdate = function(e) {}
+
     // callback for error event
     AudioPool.prototype.onError = function(e) {}
-    
+
     // callback for error event
     AudioPool.prototype.onDataLoaded = function(e) {}
     // ---------------------------------------------------------
@@ -104,10 +104,10 @@
 
         $('#'+this.PoolID+' >.audiotags').remove();
     }
-    
+
     // add new file to pool
     AudioPool.prototype.addAudio = function(path, ID){
-    
+
         var audiotag = document.createElement("audio");
 
         audiotag.setAttribute('src', path);
@@ -123,9 +123,9 @@
             gainNode.gain.setValueAtTime(0.0000001, 0);
             this.gainNodes[ID] = gainNode;
         }
-        
+
         $(audiotag).off();
-        
+
         // external event handlers
         $(audiotag).on("timeupdate", this.onTimeUpdate);
         $(audiotag).on("loadeddata", this.onDataLoaded);
@@ -142,10 +142,10 @@
             audiotag.load();
         }
     }
-    
+
     // play audio with specified ID
     AudioPool.prototype.play = function(ID){
-        var audiotag = $('#'+this.PoolID+' > #audio'+ID).get(0);        
+        var audiotag = $('#'+this.PoolID+' > #audio'+ID).get(0);
         audiotag.currentTime = 0.000001 + this.ABPos[0] / 100.0 * audiotag.duration;
 
         if (this.waContext!==false) {
@@ -159,12 +159,12 @@
         } else {
             audiotag.play();
         }
-        
+
         this.IDPlaying = ID;
     }
 
     // return to loop begin
-    AudioPool.prototype.loopReturn = function() { 
+    AudioPool.prototype.loopReturn = function() {
 
         if (this.waContext!==false) {
             // fade out
@@ -179,11 +179,11 @@
             setTimeout( function(){
                     _this.LoopFade = false;
                     audiotag.currentTime = 0.000001 + _this.ABPos[0] / 100.0 * audiotag.duration;
-                    _this.gainNodes[_this.IDPlaying].gain.cancelScheduledValues(_this.waContext.currentTime);       
+                    _this.gainNodes[_this.IDPlaying].gain.cancelScheduledValues(_this.waContext.currentTime);
                     _this.gainNodes[_this.IDPlaying].gain.setTargetAtTime(1, _this.waContext.currentTime, _this.fadeOutTime/1.0 );
-                }, 
+                },
                 this.fadeOutTime*1000 + 2
-            );            
+            );
         } else {
             // return to the start marker
             var audiotag = $('#'+this.PoolID+' > #audio'+this.IDPlaying).get(0);
@@ -191,17 +191,17 @@
             audiotag.play();
         }
     }
-    
+
     // pause currently playing audio
-    AudioPool.prototype.pause = function() {   
+    AudioPool.prototype.pause = function() {
 
         if (this.IDPlaying!==-1) {
- 
+
             var audiotag = $('#'+this.PoolID+' > #audio'+this.IDPlaying).get(0);
             if ((this.waContext!==false) && (!audiotag.paused)) {
                 this.gainNodes[this.IDPlaying].gain.cancelScheduledValues(this.waContext.currentTime);
                 this.gainNodes[this.IDPlaying].gain.setTargetAtTime(0, this.waContext.currentTime, this.fadeOutTime/8.0 );
-        
+
                 var _this  = this;
                 var prevID = this.IDPlaying;
                 setTimeout( function(){if (_this.IDPlaying!==prevID) audiotag.pause();}, _this.fadeOutTime*1000 + 5);
@@ -215,18 +215,18 @@
     // set volume of <audio> tags
     AudioPool.prototype.setVolume = function(vol) {
         var vol = $('#VolumeSlider').slider('option', 'value') / 100;
-        
-        var audioTags = $('#'+this.PoolID+' > audio');    
-        for (var i = 0; i<audioTags.length; i++) { 
+
+        var audioTags = $('#'+this.PoolID+' > audio');
+        for (var i = 0; i<audioTags.length; i++) {
             audioTags[i].volume = vol;
         }
     }
-    
+
     // set loop mode
     AudioPool.prototype.setLooped = function(loop) {
             this.LoopAudio = loop;
     }
-    
+
     // toggle loop mode
     AudioPool.prototype.toggleLooped = function() {
         this.LoopAudio = !this.LoopAudio;
@@ -272,10 +272,10 @@ function getDateStamp() {
         num = num + '';
         return num.length < 2 ? '0' + num : num;
     }
-    return date.getFullYear() + 
+    return date.getFullYear() +
         pad(date.getMonth() + 1) +
         pad(date.getDate()) + '-' +
-        pad(date.getHours()) + 
+        pad(date.getHours()) +
         pad(date.getMinutes()) +
         pad(date.getSeconds());
 }
@@ -358,7 +358,7 @@ $.extend({ alert: function (message, title) {
            $('#LoadOverlay').append('<p class="error">Internet Explorer version 8 and below is unfortunately not supported by BeaqleJS. Please update to a recent release or choose another browser.</p>');
            return;
         }
-        
+
         this.TestConfig = TestData;
 
         // some state variables
@@ -386,7 +386,7 @@ $.extend({ alert: function (message, title) {
         // show introduction div
         $('#TestTitle').html(this.TestConfig.TestName);
         $('#TestIntroduction').show();
-        
+
         // setup buttons and controls
         var handlerObject = this;
         $('#VolumeSlider').slider({
@@ -398,7 +398,7 @@ $.extend({ alert: function (message, title) {
                 handlerObject.audioPool.setVolume(vol);
             }
         });
-                
+
         if (this.TestConfig.EnableABLoop==true) {
             $('#ABRange').slider({
                 range: true,
@@ -429,9 +429,9 @@ $.extend({ alert: function (message, title) {
         $('#BtnPrevTest').button();
         $('#BtnPrevTest').on('click', $.proxy(handlerObject.prevTest, handlerObject));
         $('#BtnStartTest').button();
-        $('#BtnSubmitData').button({ icons: { primary: 'ui-icon-signal-diag' }});     
+        $('#BtnSubmitData').button({ icons: { primary: 'ui-icon-signal-diag' }});
         $('#BtnDownloadData').button({ icons: { primary: 'ui-icon-arrowthickstop-1-s' }});
-                
+
 
         // install handler to warn user when test is running and he tries to leave the page
         var testHandle = this.TestState
@@ -466,7 +466,7 @@ $.extend({ alert: function (message, title) {
         } else {
             // if previous test was last one, ask before loading final page and then exit test
             if (confirm('This was the last test. Do you want to finish?')) {
-            
+
                 $('#TableContainer').hide();
                 $('#PlayerControls').hide();
                 $('#TestControls').hide();
@@ -523,7 +523,7 @@ $.extend({ alert: function (message, title) {
 
     // ###################################################################
     ListeningTest.prototype.startTests = function() {
-        
+
         // init linear test sequence
         this.TestState.TestSequence = Array();
         for (var i = 0; i < this.TestConfig.Testsets.length; i++)
@@ -548,7 +548,7 @@ $.extend({ alert: function (message, title) {
     	this.runTest(this.TestState.TestSequence[this.TestState.CurrentTest]);
     }
 
-    // ###################################################################    
+    // ###################################################################
     // prepares display to run test with number TestIdx
     ListeningTest.prototype.runTest = function(TestIdx) {
 
@@ -572,7 +572,7 @@ $.extend({ alert: function (message, title) {
         $('#TableContainer').hide();
         $('#PlayerControls').hide();
         $('#LoadOverlay').show();
-                
+
         // set some state variables
         this.TestState.TestIsRunning = 1;
 
@@ -581,26 +581,26 @@ $.extend({ alert: function (message, title) {
             $(this).button();
             $(this).on('click', $.proxy(handlerObject.pauseAllAudios, handlerObject));
         });
-        
+
         $('.playButton').each( function() {
             $(this).button();
             var audioID = $(this).attr('rel');
             $(this).on('click', $.proxy(function(event) {handlerObject.playAudio(audioID)}, handlerObject));
         });
-            
+
         // load and apply already existing ratings
         if (typeof this.TestState.Ratings[TestIdx] !== 'undefined') this.readRatings(TestIdx);
 
         this.TestState.startTime = new Date().getTime();
-            
+
     }
 
     // ###################################################################
     // pause all audios
-    ListeningTest.prototype.pauseAllAudios = function () {    
+    ListeningTest.prototype.pauseAllAudios = function () {
         this.audioPool.pause();
         $(".playButton").removeClass('playButton-active');
-        $('.rateSlider').parent().css('background-color', 'transparent');    
+        $('.rateSlider').parent().css('background-color', 'transparent');
     }
 
     // ###################################################################
@@ -635,12 +635,12 @@ $.extend({ alert: function (message, title) {
     // is called whenever an <audio> tag fires the onDataLoaded event
     ListeningTest.prototype.audioLoadedCallback = function () {
         this.TestState.AudiosInLoadQueue--;
-        
+
         // show test if all files finished loading and no errors occured
         if ((this.TestState.AudiosInLoadQueue==0) && (this.TestState.AudioLoadError==false)) {
             $('#TestControls').show();
             $('#TableContainer').show();
-            $('#PlayerControls').show();       
+            $('#PlayerControls').show();
             $('#LoadOverlay').hide();
         }
     }
@@ -678,38 +678,38 @@ $.extend({ alert: function (message, title) {
 
         var s = parseInt(e.target.currentTime % 60);
         var m = parseInt((e.target.currentTime / 60) % 60);
-        
+
         if (m<10) m = "0"+m;
-        if (s<10) s = "0"+s;            
-        
+        if (s<10) s = "0"+s;
+
         $('#duration > span').html( m + ':' + s );
-        
+
         var progress = e.target.currentTime / e.target.duration * 100;
-        
+
         $('#ProgressBar').progressbar( "option", "value", progress);
     }
 
 
     // ###################################################################
     // enable looping for all audios
-    ListeningTest.prototype.toggleLooping = function () {    
+    ListeningTest.prototype.toggleLooping = function () {
         this.audioPool.toggleLooped();
     }
 
     // ###################################################################
     //play audio with specified html ID
     ListeningTest.prototype.playAudio = function (id) {
-        
+
         this.audioPool.pause();
 
         // reset all buttons and sliders
         $('.rateSlider').parent().css('background-color', 'transparent');
         $('.playButton').removeClass('playButton-active');
-        
+
         // highlight active slider and button
         $(".rateSlider[rel="+id+"]").parent().css('background-color', '#D5E5F6');
         $(".playButton[rel="+id+"]").addClass('playButton-active');
-        
+
         this.audioPool.play(id);
     }
 
@@ -729,9 +729,9 @@ $.extend({ alert: function (message, title) {
         UserObj.UserEmail = $('#UserEMail').val();
         UserObj.UserComment = $('#UserComment').val();
 
-        var EvalResults = this.TestState.EvalResults;        
+        var EvalResults = this.TestState.EvalResults;
         EvalResults.push(UserObj)
-        
+
         var testHandle = this;
         $.ajax({
                     type: "POST",
@@ -788,7 +788,7 @@ $.extend({ alert: function (message, title) {
         UserObj.UserEmail = $('#UserEMail').val();
         UserObj.UserComment = $('#UserComment').val();
 
-        var EvalResults = this.TestState.EvalResults;        
+        var EvalResults = this.TestState.EvalResults;
         EvalResults.push(UserObj)
 
         saveTextAsFile(JSON.stringify(EvalResults), getDateStamp() + "_" + UserObj.UserName + ".txt");
@@ -844,7 +844,7 @@ $.extend({ alert: function (message, title) {
             featStr += " <span class='feature-available'>MP3</span>, ";
         else
             featStr += " <span class='feature-not-available'>MP3</span>, ";
-        
+
         if (this.browserFeatures.audioFormats['AAC'])
             featStr += " <span class='feature-available'>AAC</span>";
         else

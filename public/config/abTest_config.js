@@ -7,9 +7,9 @@ var TestConfig = {
     "EnableABLoop": true,
     "EnableOnlineSubmission": false,
     "BeaqleServiceURL": "",
-    "SupervisorContact": "", 
+    "SupervisorContact": "",
     "Testsets": [
-	//    
+	//
 	{
 	    "TestID": "id1",
 	    "Files": {
